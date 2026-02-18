@@ -15,6 +15,7 @@
       --bg3:       #1a1a1a;
       --amber:     #e8a020;
       --amber-dim: #a06a10;
+      --green:     #4ade80;
       --text:      #e8e2d9;
       --muted:     #7a7268;
       --border:    #2a2a2a;
@@ -83,7 +84,8 @@
       transition: color 0.2s;
     }
 
-    .nav-links a:hover { color: var(--amber); }
+    .nav-links a:hover,
+    .nav-links a.active { color: var(--amber); }
 
     /* ── HERO ── */
     #hero {
@@ -105,6 +107,7 @@
       background-size: 60px 60px;
       opacity: 0.4;
       mask-image: radial-gradient(ellipse 80% 80% at 50% 50%, black 30%, transparent 100%);
+      will-change: transform;
     }
 
     .hero-tag {
@@ -116,6 +119,21 @@
       margin-bottom: 1.5rem;
       opacity: 0;
       animation: fadeUp 0.7s 0.2s forwards;
+    }
+
+    .cursor {
+      display: inline-block;
+      width: 2px;
+      height: 0.85em;
+      background: var(--amber);
+      margin-left: 2px;
+      vertical-align: text-bottom;
+      animation: blink 1s step-end infinite;
+    }
+
+    @keyframes blink {
+      0%, 100% { opacity: 1; }
+      50%       { opacity: 0; }
     }
 
     h1.hero-name {
@@ -141,13 +159,45 @@
       animation: fadeUp 0.7s 0.5s forwards;
     }
 
+    /* ── AVAILABILITY BADGE ── */
+    .availability-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.65rem;
+      font-family: var(--mono);
+      font-size: 0.72rem;
+      color: var(--text);
+      background: var(--bg2);
+      border: 1px solid var(--border);
+      padding: 0.45rem 1rem;
+      margin-top: 1.75rem;
+      opacity: 0;
+      animation: fadeUp 0.7s 0.6s forwards;
+      width: fit-content;
+    }
+
+    .badge-dot {
+      width: 7px;
+      height: 7px;
+      border-radius: 50%;
+      background: var(--green);
+      box-shadow: 0 0 8px var(--green);
+      animation: pulse-dot 2.5s ease-in-out infinite;
+      flex-shrink: 0;
+    }
+
+    @keyframes pulse-dot {
+      0%, 100% { opacity: 1;   transform: scale(1); }
+      50%       { opacity: 0.5; transform: scale(0.75); }
+    }
+
     .hero-cta {
-      margin-top: 3rem;
+      margin-top: 2.5rem;
       display: flex;
       gap: 1rem;
       flex-wrap: wrap;
       opacity: 0;
-      animation: fadeUp 0.7s 0.65s forwards;
+      animation: fadeUp 0.7s 0.75s forwards;
     }
 
     .btn {
@@ -186,7 +236,7 @@
       align-items: center;
       gap: 0.75rem;
       opacity: 0;
-      animation: fadeUp 0.7s 0.9s forwards;
+      animation: fadeUp 0.7s 1s forwards;
     }
 
     .hero-scroll::before {
@@ -283,10 +333,11 @@
 
     .projects-grid {
       display: grid;
-      grid-template-columns: repeat(auto-fill, minmax(340px, 1fr));
+      grid-template-columns: repeat(2, 1fr);
       gap: 1.5rem;
     }
 
+    /* ── BASE PROJECT CARD ── */
     .project-card {
       background: var(--bg2);
       border: 1px solid var(--border);
@@ -309,6 +360,98 @@
     .project-card:hover { border-color: var(--amber-dim); transform: translateY(-3px); }
     .project-card:hover::before { height: 100%; }
 
+    /* ── FEATURED CARD ── */
+    .project-card--featured {
+      grid-column: 1 / -1;
+      display: grid;
+      grid-template-columns: 1.3fr 0.7fr;
+      gap: 2.5rem;
+      padding: 2.5rem;
+      border-color: rgba(232,160,32,0.25);
+      background: linear-gradient(135deg, var(--bg2) 60%, rgba(232,160,32,0.04) 100%);
+    }
+
+    /* horizontal top-bar accent instead of vertical strip */
+    .project-card--featured::before {
+      width: 0;
+      height: 2px;
+      left: 0;
+      top: 0;
+      background: linear-gradient(90deg, var(--amber), transparent);
+      transition: width 0.5s ease;
+    }
+
+    .project-card--featured:hover {
+      border-color: rgba(232,160,32,0.45);
+      transform: none;
+    }
+
+    .project-card--featured:hover::before {
+      width: 100%;
+      height: 2px;
+    }
+
+    .featured-badge {
+      display: inline-block;
+      font-family: var(--mono);
+      font-size: 0.65rem;
+      color: var(--bg);
+      background: var(--amber);
+      padding: 0.2rem 0.65rem;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      margin-bottom: 1.25rem;
+    }
+
+    /* Spec panel on featured card */
+    .project-spec {
+      background: var(--bg3);
+      border: 1px solid var(--border);
+      padding: 1.75rem;
+      align-self: start;
+    }
+
+    .project-spec-title {
+      font-family: var(--mono);
+      font-size: 0.68rem;
+      color: var(--amber);
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      margin-bottom: 1.25rem;
+      padding-bottom: 0.75rem;
+      border-bottom: 1px solid var(--border);
+    }
+
+    .spec-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      gap: 1rem;
+      padding: 0.65rem 0;
+      border-bottom: 1px solid var(--border);
+    }
+
+    .spec-row:last-child { border-bottom: none; }
+
+    .spec-key {
+      font-family: var(--mono);
+      font-size: 0.7rem;
+      color: var(--muted);
+      letter-spacing: 0.04em;
+      white-space: nowrap;
+    }
+
+    .spec-val {
+      font-family: var(--mono);
+      font-size: 0.7rem;
+      color: var(--text);
+      text-align: right;
+      line-height: 1.5;
+    }
+
+    .spec-val.green { color: var(--green); }
+
+    /* ── PROJECT CARD INTERNALS ── */
     .project-num {
       font-family: var(--mono);
       font-size: 0.7rem;
@@ -326,17 +469,33 @@
       line-height: 1.3;
     }
 
+    .project-card--featured .project-title {
+      font-size: 1.5rem;
+    }
+
     .project-desc {
       font-size: 0.92rem;
       color: var(--muted);
       line-height: 1.65;
+      margin-bottom: 1.25rem;
+    }
+
+    .project-outcome {
+      font-family: var(--mono);
+      font-size: 0.78rem;
+      color: var(--text);
+      background: var(--bg3);
+      border-left: 2px solid var(--amber);
+      padding: 0.65rem 1rem;
       margin-bottom: 1.5rem;
+      line-height: 1.5;
     }
 
     .project-tags {
       display: flex;
       flex-wrap: wrap;
       gap: 0.4rem;
+      margin-bottom: 1.5rem;
     }
 
     .tag {
@@ -350,14 +509,13 @@
 
     .project-link {
       display: inline-block;
-      margin-top: 1.5rem;
       font-family: var(--mono);
       font-size: 0.75rem;
       color: var(--amber);
       text-decoration: none;
       letter-spacing: 0.08em;
       text-transform: uppercase;
-      transition: gap 0.2s;
+      transition: opacity 0.2s;
     }
 
     .project-link:hover { text-decoration: underline; }
@@ -405,9 +563,7 @@
     .skill-item:hover { border-color: var(--amber-dim); color: var(--amber); }
 
     /* ── RESUME ── */
-    #resume {
-      text-align: center;
-    }
+    #resume { text-align: center; }
 
     .resume-box {
       display: inline-block;
@@ -468,9 +624,7 @@
       margin-bottom: 0.1rem;
     }
 
-    .contact-item-value {
-      font-size: 0.95rem;
-    }
+    .contact-item-value { font-size: 0.95rem; }
 
     .contact-icon {
       font-size: 1.2rem;
@@ -512,6 +666,12 @@
     }
 
     /* ── RESPONSIVE ── */
+    @media (max-width: 900px) {
+      .project-card--featured {
+        grid-template-columns: 1fr;
+      }
+    }
+
     @media (max-width: 768px) {
       nav { padding: 1rem 1.5rem; }
       .nav-links { gap: 1.5rem; }
@@ -519,6 +679,7 @@
       #hero { padding: 7rem 1.5rem 4rem; }
       .hero-scroll { left: 1.5rem; }
       .about-grid, .contact-grid { grid-template-columns: 1fr; gap: 3rem; }
+      .projects-grid { grid-template-columns: 1fr; }
       .resume-box { padding: 3rem 2rem; }
       footer { flex-direction: column; gap: 0.75rem; text-align: center; }
     }
@@ -540,12 +701,17 @@
 
   <!-- HERO -->
   <section id="hero">
-    <div class="hero-grid-bg"></div>
-    <p class="hero-tag">// Computer Engineer</p>
+    <div class="hero-grid-bg" id="heroBg"></div>
+    <p class="hero-tag" id="heroTag"><span class="cursor"></span></p>
     <h1 class="hero-name">Nathan<br /><span>Sarkozy</span></h1>
     <p class="hero-sub">Embedded systems, FPGA design, and hardware-software integration. Building the physical layer of computing, one register at a time.</p>
+    <div class="availability-badge">
+      <span class="badge-dot"></span>
+      Open to Summer 2026 Internships
+    </div>
     <div class="hero-cta">
       <a href="#projects" class="btn btn-solid">View Projects</a>
+      <a href="resume.pdf" download class="btn">Download Resume</a>
       <a href="#contact" class="btn">Get in Touch</a>
     </div>
     <span class="hero-scroll">Scroll to explore</span>
@@ -565,11 +731,11 @@
       </div>
       <div class="about-stats reveal">
         <div class="stat-card">
-          <div class="stat-value">3.90</div>
+          <div class="stat-value" data-count="3.90" data-decimals="2">3.90</div>
           <div class="stat-label">Major GPA</div>
         </div>
         <div class="stat-card">
-          <div class="stat-value">2027</div>
+          <div class="stat-value" data-count="2027" data-decimals="0">2027</div>
           <div class="stat-label">Expected Grad</div>
         </div>
         <div class="stat-card">
@@ -577,7 +743,7 @@
           <div class="stat-label">B.S. Computer Eng.</div>
         </div>
         <div class="stat-card">
-          <div class="stat-value">5+</div>
+          <div class="stat-value" data-count="5" data-decimals="0" data-suffix="+">5+</div>
           <div class="stat-label">Hardware Projects</div>
         </div>
       </div>
@@ -592,57 +758,89 @@
     <h2 class="section-title reveal">Things I've<br />built.</h2>
     <div class="projects-grid">
 
-      <div class="project-card reveal">
-        <p class="project-num">01 / FPGA</p>
-        <h3 class="project-title">FPGA-Based Digital Compass with Sensor Fusion</h3>
-        <p class="project-desc">Real-time digital compass on the Nexys A7-100T FPGA. Designed Verilog modules for I²C and SPI communication with a Pmod CMPS2 magnetometer and accelerometer, implemented tilt-compensation and heading computation, with output to a seven-segment display.</p>
-        <div class="project-tags">
-          <span class="tag">Verilog</span>
-          <span class="tag">FPGA</span>
-          <span class="tag">I²C</span>
-          <span class="tag">SPI</span>
-          <span class="tag">DSP</span>
-          <span class="tag">Nexys A7</span>
+      <!-- FEATURED -->
+      <div class="project-card project-card--featured reveal">
+        <div class="project-card--featured-main">
+          <span class="featured-badge">Featured Project</span>
+          <p class="project-num">01 / FPGA</p>
+          <h3 class="project-title">FPGA-Based Digital Compass with Sensor Fusion</h3>
+          <p class="project-desc">Real-time digital compass on the Nexys A7-100T FPGA. Designed all Verilog modules from scratch — no vendor IP — for I²C and SPI communication with a Pmod CMPS2 magnetometer and accelerometer. Implemented tilt-compensation to maintain accurate heading across off-axis orientations, with output to a seven-segment display.</p>
+          <div class="project-outcome">All hardware description written in Verilog from first principles. Tilt compensation ensures heading accuracy across ±30° pitch and roll variation.</div>
+          <div class="project-tags">
+            <span class="tag">Verilog</span>
+            <span class="tag">FPGA</span>
+            <span class="tag">I²C</span>
+            <span class="tag">SPI</span>
+            <span class="tag">DSP</span>
+            <span class="tag">Nexys A7</span>
+            <span class="tag">Sensor Fusion</span>
+          </div>
+          <a href="https://github.com/ndsarkozy" class="project-link" target="_blank">View on GitHub →</a>
         </div>
-        <a href="https://github.com/ndsarkozy" class="project-link" target="_blank">View on GitHub →</a>
+        <div class="project-spec">
+          <p class="project-spec-title">// Spec Sheet</p>
+          <div class="spec-row">
+            <span class="spec-key">Platform</span>
+            <span class="spec-val">Nexys A7-100T</span>
+          </div>
+          <div class="spec-row">
+            <span class="spec-key">Sensor</span>
+            <span class="spec-val">Pmod CMPS2<br/>(Mag + Accel)</span>
+          </div>
+          <div class="spec-row">
+            <span class="spec-key">Interfaces</span>
+            <span class="spec-val">I²C, SPI</span>
+          </div>
+          <div class="spec-row">
+            <span class="spec-key">HDL</span>
+            <span class="spec-val">Verilog<br/>(no vendor IP)</span>
+          </div>
+          <div class="spec-row">
+            <span class="spec-key">Feature</span>
+            <span class="spec-val">Tilt Compensation</span>
+          </div>
+          <div class="spec-row">
+            <span class="spec-key">Output</span>
+            <span class="spec-val">7-Segment Display</span>
+          </div>
+          <div class="spec-row">
+            <span class="spec-key">Status</span>
+            <span class="spec-val green">Completed</span>
+          </div>
+        </div>
       </div>
 
+      <!-- CARD 2 -->
       <div class="project-card reveal">
         <p class="project-num">02 / EMBEDDED</p>
         <h3 class="project-title">Line-Following Robot with FSM Controller</h3>
-        <p class="project-desc">Led hardware design for an autonomous line-following robot using a TM4C123GH6PM microcontroller and 8-channel IR reflectance sensor array. Implemented a finite state machine for motor control and designed a 3D-printed servo-controlled gate with IR object detection.</p>
+        <p class="project-desc">Led hardware design for an autonomous line-following robot using a TM4C123GH6PM microcontroller and 8-channel IR reflectance sensor array. Implemented a finite state machine for closed-loop motor control and designed a 3D-printed servo-controlled gate with IR object detection.</p>
+        <div class="project-outcome">FSM motor control achieved consistent path tracking on a closed course. Gate servo responded to IR detection in real time.</div>
         <div class="project-tags">
           <span class="tag">C</span>
           <span class="tag">TM4C123</span>
           <span class="tag">FSM</span>
           <span class="tag">IR Sensors</span>
           <span class="tag">3D Printing</span>
+          <span class="tag">PWM</span>
         </div>
         <a href="https://github.com/ndsarkozy" class="project-link" target="_blank">View on GitHub →</a>
       </div>
 
+      <!-- CARD 3 -->
       <div class="project-card reveal">
         <p class="project-num">03 / ESP32</p>
         <h3 class="project-title">Digital Golf GPS Range Finder</h3>
-        <p class="project-desc">Handheld ESP32-based device with NEO-6M GPS module providing real-time yardage to the front, middle, and back of the green, current hole tracking, and hazard display. Fully assembled and deployed on course.</p>
+        <p class="project-desc">Handheld ESP32-based device with NEO-6M GPS module providing real-time yardage to the front, middle, and back of the green, current hole tracking, and hazard display. NMEA sentence parsing over UART, lightweight embedded UI, fully assembled and deployed on-course.</p>
+        <div class="project-outcome">Deployed on a real golf course and actively used. GPS fix acquired in under 30 seconds — end-to-end product development from breadboard to enclosure.</div>
         <div class="project-tags">
           <span class="tag">ESP32</span>
           <span class="tag">C++</span>
-          <span class="tag">GPS</span>
+          <span class="tag">GPS / NMEA</span>
           <span class="tag">UART</span>
           <span class="tag">Embedded UI</span>
         </div>
         <a href="https://github.com/ndsarkozy" class="project-link" target="_blank">View on GitHub →</a>
-      </div>
-
-      <!-- PLACEHOLDER CARD — easy to duplicate and fill in -->
-      <div class="project-card reveal" style="border-style: dashed; opacity: 0.45;">
-        <p class="project-num">04 / UPCOMING</p>
-        <h3 class="project-title">Next Project</h3>
-        <p class="project-desc">This space is reserved for future work. Check back soon or visit GitHub for the latest.</p>
-        <div class="project-tags">
-          <span class="tag">TBD</span>
-        </div>
       </div>
 
     </div>
@@ -722,7 +920,6 @@
     <div class="reveal">
       <div class="resume-box">
         <p>One-page overview of my education, projects, experience, and skills. Updated for Spring 2026 internship applications.</p>
-        <!-- Replace the href below with the actual path to your resume PDF in your repo -->
         <a href="resume.pdf" download class="btn btn-solid">Download Resume (PDF)</a>
       </div>
     </div>
@@ -779,17 +976,80 @@
     <p>Built with HTML, CSS & care // Long Beach, CA</p>
   </footer>
 
-  <!-- SCROLL REVEAL SCRIPT -->
   <script>
-    const observer = new IntersectionObserver((entries) => {
+    /* ── SCROLL REVEAL ── */
+    const revealObserver = new IntersectionObserver((entries) => {
       entries.forEach(entry => {
         if (entry.isIntersecting) {
           entry.target.classList.add('visible');
+          // trigger count-up for stat cards when they become visible
+          const counters = entry.target.querySelectorAll('[data-count]');
+          counters.forEach(el => startCountUp(el));
+          if (entry.target.dataset.count) startCountUp(entry.target);
         }
       });
     }, { threshold: 0.1 });
 
-    document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
+    document.querySelectorAll('.reveal').forEach(el => revealObserver.observe(el));
+
+    /* ── COUNT-UP ── */
+    function startCountUp(el) {
+      if (el.dataset.counted) return;
+      el.dataset.counted = 'true';
+
+      const target   = parseFloat(el.dataset.count);
+      const decimals = parseInt(el.dataset.decimals ?? '0');
+      const suffix   = el.dataset.suffix ?? '';
+      const duration = 1400;
+      const startTime = performance.now();
+
+      function tick(now) {
+        const elapsed  = now - startTime;
+        const progress = Math.min(elapsed / duration, 1);
+        const eased    = 1 - Math.pow(1 - progress, 3);
+        el.textContent = (eased * target).toFixed(decimals) + suffix;
+        if (progress < 1) requestAnimationFrame(tick);
+      }
+      requestAnimationFrame(tick);
+    }
+
+    /* ── SCROLL-SPY NAV ── */
+    const sections  = document.querySelectorAll('section[id]');
+    const navLinks  = document.querySelectorAll('.nav-links a');
+
+    window.addEventListener('scroll', () => {
+      let current = '';
+      sections.forEach(sec => {
+        if (window.scrollY >= sec.offsetTop - 200) current = sec.id;
+      });
+      navLinks.forEach(link => {
+        link.classList.toggle('active', link.getAttribute('href') === '#' + current);
+      });
+    }, { passive: true });
+
+    /* ── PARALLAX HERO GRID ── */
+    const heroBg = document.getElementById('heroBg');
+    window.addEventListener('scroll', () => {
+      const y = window.scrollY;
+      if (y < window.innerHeight) {
+        heroBg.style.transform = `translateY(${y * 0.25}px)`;
+      }
+    }, { passive: true });
+
+    /* ── TYPING ANIMATION ── */
+    const heroTag  = document.getElementById('heroTag');
+    const tagText  = '// Computer Engineer';
+    let   charIdx  = 0;
+
+    function type() {
+      if (charIdx < tagText.length) {
+        const cursor = heroTag.querySelector('.cursor');
+        heroTag.insertBefore(document.createTextNode(tagText[charIdx++]), cursor);
+        setTimeout(type, 65);
+      }
+    }
+
+    setTimeout(type, 400);
   </script>
 
 </body>
