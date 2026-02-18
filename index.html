@@ -1,0 +1,796 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Nathan Sarkozy — Computer Engineer</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=Syne:wght@700;800&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet" />
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --bg:        #0d0d0d;
+      --bg2:       #141414;
+      --bg3:       #1a1a1a;
+      --amber:     #e8a020;
+      --amber-dim: #a06a10;
+      --text:      #e8e2d9;
+      --muted:     #7a7268;
+      --border:    #2a2a2a;
+      --mono:      'IBM Plex Mono', monospace;
+      --display:   'Syne', sans-serif;
+      --body:      'DM Sans', sans-serif;
+    }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      background: var(--bg);
+      color: var(--text);
+      font-family: var(--body);
+      font-weight: 300;
+      line-height: 1.7;
+      overflow-x: hidden;
+    }
+
+    /* ── NOISE OVERLAY ── */
+    body::before {
+      content: '';
+      position: fixed;
+      inset: 0;
+      background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.04'/%3E%3C/svg%3E");
+      pointer-events: none;
+      z-index: 9999;
+      opacity: 0.35;
+    }
+
+    /* ── NAV ── */
+    nav {
+      position: fixed;
+      top: 0; left: 0; right: 0;
+      z-index: 100;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 1.2rem 4rem;
+      background: rgba(13,13,13,0.85);
+      backdrop-filter: blur(12px);
+      border-bottom: 1px solid var(--border);
+    }
+
+    .nav-logo {
+      font-family: var(--mono);
+      font-size: 0.85rem;
+      color: var(--amber);
+      letter-spacing: 0.08em;
+      text-decoration: none;
+    }
+
+    .nav-links {
+      display: flex;
+      gap: 2.5rem;
+      list-style: none;
+    }
+
+    .nav-links a {
+      font-family: var(--mono);
+      font-size: 0.78rem;
+      color: var(--muted);
+      text-decoration: none;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+      transition: color 0.2s;
+    }
+
+    .nav-links a:hover { color: var(--amber); }
+
+    /* ── HERO ── */
+    #hero {
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      padding: 8rem 4rem 4rem;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .hero-grid-bg {
+      position: absolute;
+      inset: 0;
+      background-image:
+        linear-gradient(var(--border) 1px, transparent 1px),
+        linear-gradient(90deg, var(--border) 1px, transparent 1px);
+      background-size: 60px 60px;
+      opacity: 0.4;
+      mask-image: radial-gradient(ellipse 80% 80% at 50% 50%, black 30%, transparent 100%);
+    }
+
+    .hero-tag {
+      font-family: var(--mono);
+      font-size: 0.78rem;
+      color: var(--amber);
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      margin-bottom: 1.5rem;
+      opacity: 0;
+      animation: fadeUp 0.7s 0.2s forwards;
+    }
+
+    h1.hero-name {
+      font-family: var(--display);
+      font-size: clamp(3.5rem, 9vw, 8rem);
+      font-weight: 800;
+      line-height: 0.95;
+      letter-spacing: -0.02em;
+      color: var(--text);
+      opacity: 0;
+      animation: fadeUp 0.7s 0.35s forwards;
+    }
+
+    h1.hero-name span { color: var(--amber); }
+
+    .hero-sub {
+      margin-top: 2rem;
+      font-size: 1.1rem;
+      color: var(--muted);
+      max-width: 520px;
+      font-weight: 300;
+      opacity: 0;
+      animation: fadeUp 0.7s 0.5s forwards;
+    }
+
+    .hero-cta {
+      margin-top: 3rem;
+      display: flex;
+      gap: 1rem;
+      flex-wrap: wrap;
+      opacity: 0;
+      animation: fadeUp 0.7s 0.65s forwards;
+    }
+
+    .btn {
+      display: inline-block;
+      padding: 0.75rem 1.8rem;
+      font-family: var(--mono);
+      font-size: 0.8rem;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      text-decoration: none;
+      border: 1px solid var(--amber);
+      color: var(--amber);
+      background: transparent;
+      cursor: pointer;
+      transition: background 0.2s, color 0.2s;
+    }
+
+    .btn:hover { background: var(--amber); color: var(--bg); }
+
+    .btn-solid {
+      background: var(--amber);
+      color: var(--bg);
+    }
+
+    .btn-solid:hover { background: transparent; color: var(--amber); }
+
+    .hero-scroll {
+      position: absolute;
+      bottom: 2.5rem;
+      left: 4rem;
+      font-family: var(--mono);
+      font-size: 0.72rem;
+      color: var(--muted);
+      letter-spacing: 0.1em;
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+      opacity: 0;
+      animation: fadeUp 0.7s 0.9s forwards;
+    }
+
+    .hero-scroll::before {
+      content: '';
+      display: block;
+      width: 30px;
+      height: 1px;
+      background: var(--muted);
+    }
+
+    /* ── SECTIONS ── */
+    section {
+      padding: 7rem 4rem;
+      max-width: 1200px;
+      margin: 0 auto;
+    }
+
+    .section-label {
+      font-family: var(--mono);
+      font-size: 0.72rem;
+      color: var(--amber);
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      margin-bottom: 0.75rem;
+    }
+
+    h2.section-title {
+      font-family: var(--display);
+      font-size: clamp(2rem, 4vw, 3rem);
+      font-weight: 800;
+      line-height: 1.1;
+      color: var(--text);
+      margin-bottom: 3rem;
+    }
+
+    .divider {
+      width: 100%;
+      height: 1px;
+      background: var(--border);
+      max-width: 1200px;
+      margin: 0 auto;
+    }
+
+    /* ── ABOUT ── */
+    .about-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 5rem;
+      align-items: start;
+    }
+
+    .about-text p {
+      color: var(--muted);
+      font-size: 1.05rem;
+      margin-bottom: 1.2rem;
+    }
+
+    .about-text p strong { color: var(--text); font-weight: 500; }
+
+    .about-stats {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 1.5rem;
+    }
+
+    .stat-card {
+      background: var(--bg2);
+      border: 1px solid var(--border);
+      padding: 1.5rem;
+      transition: border-color 0.2s;
+    }
+
+    .stat-card:hover { border-color: var(--amber-dim); }
+
+    .stat-value {
+      font-family: var(--display);
+      font-size: 2.2rem;
+      font-weight: 800;
+      color: var(--amber);
+      line-height: 1;
+      margin-bottom: 0.4rem;
+    }
+
+    .stat-label {
+      font-family: var(--mono);
+      font-size: 0.72rem;
+      color: var(--muted);
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+    }
+
+    /* ── PROJECTS ── */
+    #projects { max-width: 1200px; }
+
+    .projects-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(340px, 1fr));
+      gap: 1.5rem;
+    }
+
+    .project-card {
+      background: var(--bg2);
+      border: 1px solid var(--border);
+      padding: 2rem;
+      position: relative;
+      transition: border-color 0.25s, transform 0.25s;
+      overflow: hidden;
+    }
+
+    .project-card::before {
+      content: '';
+      position: absolute;
+      top: 0; left: 0;
+      width: 3px;
+      height: 0;
+      background: var(--amber);
+      transition: height 0.3s;
+    }
+
+    .project-card:hover { border-color: var(--amber-dim); transform: translateY(-3px); }
+    .project-card:hover::before { height: 100%; }
+
+    .project-num {
+      font-family: var(--mono);
+      font-size: 0.7rem;
+      color: var(--amber-dim);
+      letter-spacing: 0.1em;
+      margin-bottom: 1rem;
+    }
+
+    .project-title {
+      font-family: var(--display);
+      font-size: 1.2rem;
+      font-weight: 700;
+      color: var(--text);
+      margin-bottom: 0.75rem;
+      line-height: 1.3;
+    }
+
+    .project-desc {
+      font-size: 0.92rem;
+      color: var(--muted);
+      line-height: 1.65;
+      margin-bottom: 1.5rem;
+    }
+
+    .project-tags {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.4rem;
+    }
+
+    .tag {
+      font-family: var(--mono);
+      font-size: 0.68rem;
+      color: var(--amber-dim);
+      border: 1px solid var(--amber-dim);
+      padding: 0.2rem 0.6rem;
+      letter-spacing: 0.06em;
+    }
+
+    .project-link {
+      display: inline-block;
+      margin-top: 1.5rem;
+      font-family: var(--mono);
+      font-size: 0.75rem;
+      color: var(--amber);
+      text-decoration: none;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      transition: gap 0.2s;
+    }
+
+    .project-link:hover { text-decoration: underline; }
+
+    /* ── SKILLS ── */
+    .skills-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+      gap: 1.5rem;
+    }
+
+    .skill-group {
+      background: var(--bg2);
+      border: 1px solid var(--border);
+      padding: 1.75rem;
+    }
+
+    .skill-group-title {
+      font-family: var(--mono);
+      font-size: 0.72rem;
+      color: var(--amber);
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      margin-bottom: 1.25rem;
+      padding-bottom: 0.75rem;
+      border-bottom: 1px solid var(--border);
+    }
+
+    .skill-list {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.5rem;
+    }
+
+    .skill-item {
+      font-family: var(--mono);
+      font-size: 0.78rem;
+      color: var(--text);
+      background: var(--bg3);
+      padding: 0.3rem 0.7rem;
+      border: 1px solid var(--border);
+      transition: border-color 0.2s, color 0.2s;
+    }
+
+    .skill-item:hover { border-color: var(--amber-dim); color: var(--amber); }
+
+    /* ── RESUME ── */
+    #resume {
+      text-align: center;
+    }
+
+    .resume-box {
+      display: inline-block;
+      background: var(--bg2);
+      border: 1px solid var(--border);
+      padding: 4rem 6rem;
+      max-width: 600px;
+      width: 100%;
+    }
+
+    .resume-box p {
+      color: var(--muted);
+      margin-bottom: 2rem;
+      font-size: 1rem;
+    }
+
+    /* ── CONTACT ── */
+    .contact-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 5rem;
+      align-items: start;
+    }
+
+    .contact-text {
+      color: var(--muted);
+      font-size: 1.05rem;
+      line-height: 1.8;
+    }
+
+    .contact-links {
+      display: flex;
+      flex-direction: column;
+      gap: 1rem;
+    }
+
+    .contact-item {
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+      padding: 1.25rem 1.5rem;
+      background: var(--bg2);
+      border: 1px solid var(--border);
+      text-decoration: none;
+      color: var(--text);
+      transition: border-color 0.2s, color 0.2s;
+    }
+
+    .contact-item:hover { border-color: var(--amber-dim); color: var(--amber); }
+
+    .contact-item-label {
+      font-family: var(--mono);
+      font-size: 0.72rem;
+      color: var(--muted);
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      display: block;
+      margin-bottom: 0.1rem;
+    }
+
+    .contact-item-value {
+      font-size: 0.95rem;
+    }
+
+    .contact-icon {
+      font-size: 1.2rem;
+      min-width: 1.5rem;
+      text-align: center;
+    }
+
+    /* ── FOOTER ── */
+    footer {
+      border-top: 1px solid var(--border);
+      padding: 2rem 4rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    footer p {
+      font-family: var(--mono);
+      font-size: 0.72rem;
+      color: var(--muted);
+      letter-spacing: 0.06em;
+    }
+
+    /* ── ANIMATIONS ── */
+    @keyframes fadeUp {
+      from { opacity: 0; transform: translateY(20px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+
+    .reveal {
+      opacity: 0;
+      transform: translateY(24px);
+      transition: opacity 0.6s ease, transform 0.6s ease;
+    }
+
+    .reveal.visible {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    /* ── RESPONSIVE ── */
+    @media (max-width: 768px) {
+      nav { padding: 1rem 1.5rem; }
+      .nav-links { gap: 1.5rem; }
+      section { padding: 5rem 1.5rem; }
+      #hero { padding: 7rem 1.5rem 4rem; }
+      .hero-scroll { left: 1.5rem; }
+      .about-grid, .contact-grid { grid-template-columns: 1fr; gap: 3rem; }
+      .resume-box { padding: 3rem 2rem; }
+      footer { flex-direction: column; gap: 0.75rem; text-align: center; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- NAV -->
+  <nav>
+    <a href="#hero" class="nav-logo">NS // CE</a>
+    <ul class="nav-links">
+      <li><a href="#about">About</a></li>
+      <li><a href="#projects">Projects</a></li>
+      <li><a href="#skills">Skills</a></li>
+      <li><a href="#resume">Resume</a></li>
+      <li><a href="#contact">Contact</a></li>
+    </ul>
+  </nav>
+
+  <!-- HERO -->
+  <section id="hero">
+    <div class="hero-grid-bg"></div>
+    <p class="hero-tag">// Computer Engineer</p>
+    <h1 class="hero-name">Nathan<br /><span>Sarkozy</span></h1>
+    <p class="hero-sub">Embedded systems, FPGA design, and hardware-software integration. Building the physical layer of computing, one register at a time.</p>
+    <div class="hero-cta">
+      <a href="#projects" class="btn btn-solid">View Projects</a>
+      <a href="#contact" class="btn">Get in Touch</a>
+    </div>
+    <span class="hero-scroll">Scroll to explore</span>
+  </section>
+
+  <div class="divider"></div>
+
+  <!-- ABOUT -->
+  <section id="about">
+    <p class="section-label reveal">// 01 — About</p>
+    <h2 class="section-title reveal">Hardware<br />by instinct.</h2>
+    <div class="about-grid">
+      <div class="about-text reveal">
+        <p>I'm a <strong>Computer Engineering student at CSULB</strong> with a focus on embedded systems and digital hardware design. I care about the layer of computing closest to the metal — where software meets silicon and timing actually matters.</p>
+        <p>My experience spans <strong>microcontroller firmware</strong> (TM4C123, ESP32), <strong>FPGA development</strong> in Verilog on the Nexys A7, and sensor interface protocols including I²C, SPI, and UART. I'm particularly interested in <strong>digital signal processing</strong> and how raw sensor data is filtered, corrected, and made useful in real-time hardware systems.</p>
+        <p>Outside the lab I work as a lead golf technician — which turns out to be surprisingly close to engineering: analyzing launch data, tuning mechanical tolerances, and diagnosing problems systematically.</p>
+      </div>
+      <div class="about-stats reveal">
+        <div class="stat-card">
+          <div class="stat-value">3.90</div>
+          <div class="stat-label">Major GPA</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-value">2027</div>
+          <div class="stat-label">Expected Grad</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-value">CSULB</div>
+          <div class="stat-label">B.S. Computer Eng.</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-value">5+</div>
+          <div class="stat-label">Hardware Projects</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <div class="divider"></div>
+
+  <!-- PROJECTS -->
+  <section id="projects" style="max-width:1200px; margin:0 auto; padding: 7rem 4rem;">
+    <p class="section-label reveal">// 02 — Projects</p>
+    <h2 class="section-title reveal">Things I've<br />built.</h2>
+    <div class="projects-grid">
+
+      <div class="project-card reveal">
+        <p class="project-num">01 / FPGA</p>
+        <h3 class="project-title">FPGA-Based Digital Compass with Sensor Fusion</h3>
+        <p class="project-desc">Real-time digital compass on the Nexys A7-100T FPGA. Designed Verilog modules for I²C and SPI communication with a Pmod CMPS2 magnetometer and accelerometer, implemented tilt-compensation and heading computation, with output to a seven-segment display.</p>
+        <div class="project-tags">
+          <span class="tag">Verilog</span>
+          <span class="tag">FPGA</span>
+          <span class="tag">I²C</span>
+          <span class="tag">SPI</span>
+          <span class="tag">DSP</span>
+          <span class="tag">Nexys A7</span>
+        </div>
+        <a href="https://github.com/ndsarkozy" class="project-link" target="_blank">View on GitHub →</a>
+      </div>
+
+      <div class="project-card reveal">
+        <p class="project-num">02 / EMBEDDED</p>
+        <h3 class="project-title">Line-Following Robot with FSM Controller</h3>
+        <p class="project-desc">Led hardware design for an autonomous line-following robot using a TM4C123GH6PM microcontroller and 8-channel IR reflectance sensor array. Implemented a finite state machine for motor control and designed a 3D-printed servo-controlled gate with IR object detection.</p>
+        <div class="project-tags">
+          <span class="tag">C</span>
+          <span class="tag">TM4C123</span>
+          <span class="tag">FSM</span>
+          <span class="tag">IR Sensors</span>
+          <span class="tag">3D Printing</span>
+        </div>
+        <a href="https://github.com/ndsarkozy" class="project-link" target="_blank">View on GitHub →</a>
+      </div>
+
+      <div class="project-card reveal">
+        <p class="project-num">03 / ESP32</p>
+        <h3 class="project-title">Digital Golf GPS Range Finder</h3>
+        <p class="project-desc">Handheld ESP32-based device with NEO-6M GPS module providing real-time yardage to the front, middle, and back of the green, current hole tracking, and hazard display. Fully assembled and deployed on course.</p>
+        <div class="project-tags">
+          <span class="tag">ESP32</span>
+          <span class="tag">C++</span>
+          <span class="tag">GPS</span>
+          <span class="tag">UART</span>
+          <span class="tag">Embedded UI</span>
+        </div>
+        <a href="https://github.com/ndsarkozy" class="project-link" target="_blank">View on GitHub →</a>
+      </div>
+
+      <!-- PLACEHOLDER CARD — easy to duplicate and fill in -->
+      <div class="project-card reveal" style="border-style: dashed; opacity: 0.45;">
+        <p class="project-num">04 / UPCOMING</p>
+        <h3 class="project-title">Next Project</h3>
+        <p class="project-desc">This space is reserved for future work. Check back soon or visit GitHub for the latest.</p>
+        <div class="project-tags">
+          <span class="tag">TBD</span>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <div class="divider"></div>
+
+  <!-- SKILLS -->
+  <section id="skills">
+    <p class="section-label reveal">// 03 — Skills</p>
+    <h2 class="section-title reveal">Tools of<br />the trade.</h2>
+    <div class="skills-grid">
+      <div class="skill-group reveal">
+        <p class="skill-group-title">Languages</p>
+        <div class="skill-list">
+          <span class="skill-item">C / C++</span>
+          <span class="skill-item">Verilog</span>
+          <span class="skill-item">SystemVerilog</span>
+          <span class="skill-item">Python</span>
+          <span class="skill-item">MATLAB</span>
+        </div>
+      </div>
+      <div class="skill-group reveal">
+        <p class="skill-group-title">Hardware Platforms</p>
+        <div class="skill-list">
+          <span class="skill-item">Nexys A7 FPGA</span>
+          <span class="skill-item">TI TM4C123</span>
+          <span class="skill-item">ESP32</span>
+          <span class="skill-item">8051</span>
+        </div>
+      </div>
+      <div class="skill-group reveal">
+        <p class="skill-group-title">Protocols & Interfaces</p>
+        <div class="skill-list">
+          <span class="skill-item">I²C</span>
+          <span class="skill-item">SPI</span>
+          <span class="skill-item">UART</span>
+          <span class="skill-item">GPIO</span>
+          <span class="skill-item">FreeRTOS</span>
+        </div>
+      </div>
+      <div class="skill-group reveal">
+        <p class="skill-group-title">IDEs & Tools</p>
+        <div class="skill-list">
+          <span class="skill-item">Keil µVision</span>
+          <span class="skill-item">Xilinx Vivado</span>
+          <span class="skill-item">VS Code</span>
+          <span class="skill-item">Git</span>
+        </div>
+      </div>
+      <div class="skill-group reveal">
+        <p class="skill-group-title">Simulation & Design</p>
+        <div class="skill-list">
+          <span class="skill-item">LTSpice</span>
+          <span class="skill-item">KiCad</span>
+          <span class="skill-item">MATLAB</span>
+        </div>
+      </div>
+      <div class="skill-group reveal">
+        <p class="skill-group-title">Debug & Test</p>
+        <div class="skill-list">
+          <span class="skill-item">Oscilloscope</span>
+          <span class="skill-item">Logic Analyzer</span>
+          <span class="skill-item">In-Circuit Debugger</span>
+          <span class="skill-item">NI myDAQ</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <div class="divider"></div>
+
+  <!-- RESUME -->
+  <section id="resume">
+    <p class="section-label reveal" style="text-align:center;">// 04 — Resume</p>
+    <h2 class="section-title reveal" style="text-align:center;">Download<br />my resume.</h2>
+    <div class="reveal">
+      <div class="resume-box">
+        <p>One-page overview of my education, projects, experience, and skills. Updated for Spring 2026 internship applications.</p>
+        <!-- Replace the href below with the actual path to your resume PDF in your repo -->
+        <a href="resume.pdf" download class="btn btn-solid">Download Resume (PDF)</a>
+      </div>
+    </div>
+  </section>
+
+  <div class="divider"></div>
+
+  <!-- CONTACT -->
+  <section id="contact">
+    <p class="section-label reveal">// 05 — Contact</p>
+    <h2 class="section-title reveal">Let's talk<br />hardware.</h2>
+    <div class="contact-grid">
+      <div class="contact-text reveal">
+        <p>I'm currently looking for embedded systems or hardware engineering internships for Summer 2026. If you're building something interesting at the hardware level, I'd love to hear about it.</p>
+        <br />
+        <p>Whether it's a recruiting inquiry, a project collaboration, or just a conversation about embedded systems and DSP — my inbox is open.</p>
+      </div>
+      <div class="contact-links reveal">
+        <a href="mailto:ndsarkozy@gmail.com" class="contact-item">
+          <span class="contact-icon">✉</span>
+          <div>
+            <span class="contact-item-label">Email</span>
+            <span class="contact-item-value">ndsarkozy@gmail.com</span>
+          </div>
+        </a>
+        <a href="https://linkedin.com/in/nathansarkozy" target="_blank" class="contact-item">
+          <span class="contact-icon">in</span>
+          <div>
+            <span class="contact-item-label">LinkedIn</span>
+            <span class="contact-item-value">in/nathansarkozy</span>
+          </div>
+        </a>
+        <a href="https://github.com/ndsarkozy" target="_blank" class="contact-item">
+          <span class="contact-icon">⌥</span>
+          <div>
+            <span class="contact-item-label">GitHub</span>
+            <span class="contact-item-value">github.com/ndsarkozy</span>
+          </div>
+        </a>
+        <a href="tel:2097403238" class="contact-item">
+          <span class="contact-icon">☏</span>
+          <div>
+            <span class="contact-item-label">Phone</span>
+            <span class="contact-item-value">209.740.3238</span>
+          </div>
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <!-- FOOTER -->
+  <footer>
+    <p>© 2026 Nathan Sarkozy</p>
+    <p>Built with HTML, CSS & care // Long Beach, CA</p>
+  </footer>
+
+  <!-- SCROLL REVEAL SCRIPT -->
+  <script>
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          entry.target.classList.add('visible');
+        }
+      });
+    }, { threshold: 0.1 });
+
+    document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
+  </script>
+
+</body>
+</html>
