@@ -5,7 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Nathan Sarkozy — Computer Engineer</title>
   <link rel="preconnect" href="https://fonts.googleapis.com" />
-  <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=Syne:wght@700;800&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=JetBrains+Mono:wght@400;500&family=Syne:wght@700;800&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet" />
   <style>
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
@@ -19,7 +19,7 @@
       --text:      #e8e2d9;
       --muted:     #7a7268;
       --border:    #2a2a2a;
-      --mono:      'IBM Plex Mono', monospace;
+      --mono:      'JetBrains Mono', 'IBM Plex Mono', monospace;
       --display:   'Syne', sans-serif;
       --body:      'DM Sans', sans-serif;
     }
@@ -683,20 +683,197 @@
       .resume-box { padding: 3rem 2rem; }
       footer { flex-direction: column; gap: 0.75rem; text-align: center; }
     }
+    /* ── UI/UX PRO MAX ENHANCEMENTS ── */
+
+    /* Skip to content */
+    .skip-link {
+      position: absolute;
+      top: -100%;
+      left: 1rem;
+      background: var(--amber);
+      color: var(--bg);
+      padding: 0.5rem 1rem;
+      font-family: var(--mono);
+      font-size: 0.78rem;
+      letter-spacing: 0.06em;
+      z-index: 10000;
+      text-decoration: none;
+      transition: top 0.2s;
+    }
+    .skip-link:focus { top: 1rem; }
+
+    /* Keyboard focus rings */
+    :focus-visible {
+      outline: 2px solid var(--amber);
+      outline-offset: 3px;
+    }
+    :focus:not(:focus-visible) { outline: none; }
+
+    /* Ambient glow on interactive hover (HUD/Sci-Fi FUI style) */
+    .btn:hover {
+      box-shadow: 0 0 22px rgba(232, 160, 32, 0.35);
+    }
+    .btn-solid:hover {
+      box-shadow: 0 0 22px rgba(232, 160, 32, 0.25);
+    }
+    .project-card:hover {
+      box-shadow: 0 0 32px rgba(232, 160, 32, 0.07);
+    }
+    .stat-card:hover {
+      box-shadow: 0 0 20px rgba(232, 160, 32, 0.1);
+    }
+    .contact-item:hover {
+      box-shadow: 0 0 20px rgba(232, 160, 32, 0.1);
+    }
+    .skill-item:hover {
+      box-shadow: 0 0 8px rgba(232, 160, 32, 0.18);
+    }
+
+    /* HUD corner brackets on featured project card */
+    .project-card--featured-main {
+      position: relative;
+    }
+    .project-card--featured-main::before,
+    .project-card--featured-main::after {
+      content: '';
+      position: absolute;
+      width: 16px;
+      height: 16px;
+      border-color: var(--amber-dim);
+      border-style: solid;
+      opacity: 0.45;
+      transition: opacity 0.35s, border-color 0.35s;
+      pointer-events: none;
+    }
+    .project-card--featured-main::before {
+      top: -4px; left: -4px;
+      border-width: 2px 0 0 2px;
+    }
+    .project-card--featured-main::after {
+      bottom: -4px; left: -4px;
+      border-width: 0 0 2px 2px;
+    }
+    .project-card--featured:hover .project-card--featured-main::before,
+    .project-card--featured:hover .project-card--featured-main::after {
+      opacity: 1;
+      border-color: var(--amber);
+    }
+
+    /* Scanline texture overlay on hero */
+    #hero::after {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: repeating-linear-gradient(
+        0deg,
+        transparent,
+        transparent 3px,
+        rgba(0, 0, 0, 0.022) 3px,
+        rgba(0, 0, 0, 0.022) 4px
+      );
+      pointer-events: none;
+      z-index: 1;
+    }
+    #hero .hero-grid-bg,
+    #hero .hero-tag,
+    #hero .hero-name,
+    #hero .hero-sub,
+    #hero .availability-badge,
+    #hero .hero-cta,
+    #hero .hero-scroll { position: relative; z-index: 2; }
+
+    /* Terminal blink cursor on section labels */
+    .section-label::after {
+      content: '_';
+      animation: blink 1s step-end infinite;
+      color: var(--amber);
+      margin-left: 1px;
+    }
+
+    /* Mobile hamburger nav */
+    .nav-toggle {
+      display: none;
+      flex-direction: column;
+      gap: 5px;
+      background: none;
+      border: none;
+      cursor: pointer;
+      padding: 0.5rem;
+      z-index: 101;
+    }
+    .nav-toggle span {
+      display: block;
+      width: 22px;
+      height: 2px;
+      background: var(--amber);
+      transition: transform 0.3s, opacity 0.3s;
+    }
+    .nav-toggle.open span:nth-child(1) { transform: translateY(7px) rotate(45deg); }
+    .nav-toggle.open span:nth-child(2) { opacity: 0; }
+    .nav-toggle.open span:nth-child(3) { transform: translateY(-7px) rotate(-45deg); }
+
+    .nav-overlay {
+      display: none;
+      position: fixed;
+      inset: 0;
+      background: rgba(0, 0, 0, 0.6);
+      z-index: 98;
+    }
+    .nav-overlay.active { display: block; }
+
+    @media (max-width: 768px) {
+      .nav-toggle { display: flex; }
+      .nav-links {
+        position: fixed;
+        top: 0;
+        right: -100%;
+        width: 240px;
+        height: 100vh;
+        background: var(--bg2);
+        border-left: 1px solid var(--border);
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        gap: 2.5rem;
+        transition: right 0.3s ease;
+        z-index: 99;
+      }
+      .nav-links.open { right: 0; }
+      .nav-links a { font-size: 0.95rem; }
+    }
+
+    /* Respect prefers-reduced-motion (UX guideline) */
+    @media (prefers-reduced-motion: reduce) {
+      *, *::before, *::after {
+        animation-duration: 0.01ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: 0.01ms !important;
+      }
+      .reveal {
+        opacity: 1 !important;
+        transform: none !important;
+      }
+    }
   </style>
 </head>
 <body>
 
+  <a href="#hero" class="skip-link">Skip to main content</a>
+  <div class="nav-overlay" id="navOverlay"></div>
+
   <!-- NAV -->
   <nav>
     <a href="#hero" class="nav-logo">NS // CE</a>
-    <ul class="nav-links">
+    <ul class="nav-links" id="navLinks">
       <li><a href="#about">About</a></li>
       <li><a href="#projects">Projects</a></li>
       <li><a href="#skills">Skills</a></li>
       <li><a href="#resume">Resume</a></li>
       <li><a href="#contact">Contact</a></li>
     </ul>
+    <button class="nav-toggle" id="navToggle" aria-label="Toggle navigation" aria-expanded="false">
+      <span></span><span></span><span></span>
+    </button>
   </nav>
 
   <!-- HERO -->
@@ -1050,6 +1227,22 @@
     }
 
     setTimeout(type, 400);
+
+    /* ── HAMBURGER NAV ── */
+    const navToggle  = document.getElementById('navToggle');
+    const navMenu    = document.getElementById('navLinks');
+    const navOverlay = document.getElementById('navOverlay');
+
+    function setNavOpen(open) {
+      navMenu.classList.toggle('open', open);
+      navToggle.classList.toggle('open', open);
+      navToggle.setAttribute('aria-expanded', String(open));
+      navOverlay.classList.toggle('active', open);
+    }
+
+    navToggle.addEventListener('click', () => setNavOpen(!navMenu.classList.contains('open')));
+    navOverlay.addEventListener('click', () => setNavOpen(false));
+    navMenu.querySelectorAll('a').forEach(a => a.addEventListener('click', () => setNavOpen(false)));
   </script>
 
 </body>
