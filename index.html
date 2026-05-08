@@ -1092,7 +1092,7 @@
           <div class="stat-label">B.S. Computer Eng.</div>
         </div>
         <div class="stat-card">
-          <div class="stat-value" data-count="5" data-decimals="0" data-suffix="+">5+</div>
+          <div class="stat-value" data-count="6" data-decimals="0" data-suffix="+">6+</div>
           <div class="stat-label">Hardware Projects</div>
         </div>
       </div>
@@ -1192,6 +1192,64 @@
         <a href="https://github.com/ndsarkozy" class="project-link" target="_blank">View on GitHub →</a>
       </div>
 
+      <!-- CARD 4 -->
+      <div class="project-card reveal" style="grid-column: 1 / -1;">
+        <div style="display:grid; grid-template-columns: 1.3fr 0.7fr; gap: 2.5rem;">
+          <div>
+            <span class="featured-badge" style="background:transparent; color:var(--green); border:1px solid var(--green); margin-bottom:1.25rem; display:inline-block;">In Progress</span>
+            <p class="project-num">04 / ESP32 + ANDROID</p>
+            <h3 class="project-title" style="font-size:1.4rem;">ESP32 Spotify Karaoke Display</h3>
+            <p class="project-desc">Two-part embedded + mobile system built around real-time Spotify lyric sync. The ESP32 firmware fetches lyrics via the Spotify API, synchronizes them to the current playback position, and drives a TFT screen — all while acting as a BLE peripheral. The Android companion app (Kotlin) connects over BLE, controls playback, and hands off track metadata so the display stays in sync without polling.</p>
+            <div class="project-outcome">Full-stack embedded system spanning firmware, a REST API integration, a custom BLE protocol, and a native Android app — built and actively developed.</div>
+            <div class="project-tags">
+              <span class="tag">ESP32</span>
+              <span class="tag">C++</span>
+              <span class="tag">Bluetooth LE</span>
+              <span class="tag">Spotify API</span>
+              <span class="tag">TFT Display</span>
+              <span class="tag">PlatformIO</span>
+              <span class="tag">Kotlin</span>
+              <span class="tag">Android</span>
+            </div>
+            <div style="display:flex; gap:1rem; flex-wrap:wrap;">
+              <a href="https://github.com/ndsarkozy/karaoke" class="project-link" target="_blank">ESP32 Firmware →</a>
+              <a href="https://github.com/ndsarkozy/KaraokeCompanion" class="project-link" target="_blank">Android App →</a>
+            </div>
+          </div>
+          <div class="project-spec">
+            <p class="project-spec-title">// Spec Sheet</p>
+            <div class="spec-row">
+              <span class="spec-key">Platform</span>
+              <span class="spec-val">ESP32</span>
+            </div>
+            <div class="spec-row">
+              <span class="spec-key">Display</span>
+              <span class="spec-val">TFT LCD</span>
+            </div>
+            <div class="spec-row">
+              <span class="spec-key">Wireless</span>
+              <span class="spec-val">Bluetooth LE</span>
+            </div>
+            <div class="spec-row">
+              <span class="spec-key">API</span>
+              <span class="spec-val">Spotify Web API</span>
+            </div>
+            <div class="spec-row">
+              <span class="spec-key">Companion</span>
+              <span class="spec-val">Android / Kotlin</span>
+            </div>
+            <div class="spec-row">
+              <span class="spec-key">Build</span>
+              <span class="spec-val">PlatformIO</span>
+            </div>
+            <div class="spec-row">
+              <span class="spec-key">Status</span>
+              <span class="spec-val green">In Progress</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
     </div>
   </section>
 
@@ -1229,6 +1287,7 @@
           <span class="skill-item">UART</span>
           <span class="skill-item">GPIO</span>
           <span class="skill-item">FreeRTOS</span>
+          <span class="skill-item">Bluetooth LE</span>
         </div>
       </div>
       <div class="skill-group reveal">
