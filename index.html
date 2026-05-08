@@ -665,6 +665,177 @@
       transform: translateY(0);
     }
 
+    /* ── NOW SECTION ── */
+    .now-grid {
+      display: grid;
+      grid-template-columns: 1fr 1.4fr;
+      gap: 4rem;
+      align-items: start;
+    }
+
+    .now-subtitle {
+      font-family: var(--mono);
+      font-size: 0.7rem;
+      color: var(--amber);
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      margin-bottom: 1.25rem;
+      padding-bottom: 0.75rem;
+      border-bottom: 1px solid var(--border);
+    }
+
+    .now-subtitle small {
+      color: var(--muted);
+      font-size: 0.65rem;
+      letter-spacing: 0.04em;
+      text-transform: none;
+      margin-left: 0.5rem;
+    }
+
+    .status-list {
+      display: flex;
+      flex-direction: column;
+      gap: 0.9rem;
+    }
+
+    .status-row {
+      display: flex;
+      align-items: flex-start;
+      gap: 0.85rem;
+      padding: 0.9rem 1rem;
+      background: var(--bg2);
+      border: 1px solid var(--border);
+    }
+
+    .status-row-icon {
+      font-size: 0.85rem;
+      min-width: 1.2rem;
+      text-align: center;
+      margin-top: 0.05rem;
+    }
+
+    .status-row-label {
+      font-family: var(--mono);
+      font-size: 0.65rem;
+      color: var(--muted);
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+      display: block;
+      margin-bottom: 0.2rem;
+    }
+
+    .status-row-value {
+      font-size: 0.9rem;
+      color: var(--text);
+      line-height: 1.5;
+    }
+
+    .status-row-value.green { color: var(--green); }
+
+    /* GitHub live feed */
+    .repo-list {
+      display: flex;
+      flex-direction: column;
+      gap: 0.75rem;
+    }
+
+    .repo-card {
+      display: block;
+      padding: 1.1rem 1.4rem;
+      background: var(--bg2);
+      border: 1px solid var(--border);
+      text-decoration: none;
+      transition: border-color 0.2s, box-shadow 0.2s;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .repo-card::before {
+      content: '';
+      position: absolute;
+      left: 0; top: 0; bottom: 0;
+      width: 2px;
+      background: var(--amber);
+      transform: scaleY(0);
+      transition: transform 0.25s;
+      transform-origin: bottom;
+    }
+
+    .repo-card:hover {
+      border-color: var(--amber-dim);
+      box-shadow: 0 0 20px rgba(232,160,32,0.08);
+    }
+
+    .repo-card:hover::before { transform: scaleY(1); }
+
+    .repo-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 1rem;
+      margin-bottom: 0.4rem;
+    }
+
+    .repo-name {
+      font-family: var(--mono);
+      font-size: 0.82rem;
+      color: var(--text);
+      font-weight: 500;
+      letter-spacing: 0.02em;
+    }
+
+    .repo-lang {
+      font-family: var(--mono);
+      font-size: 0.65rem;
+      color: var(--amber-dim);
+      border: 1px solid var(--amber-dim);
+      padding: 0.1rem 0.5rem;
+      letter-spacing: 0.06em;
+      white-space: nowrap;
+    }
+
+    .repo-desc {
+      font-size: 0.82rem;
+      color: var(--muted);
+      line-height: 1.55;
+      margin-bottom: 0.5rem;
+    }
+
+    .repo-time {
+      font-family: var(--mono);
+      font-size: 0.65rem;
+      color: var(--amber-dim);
+      letter-spacing: 0.06em;
+    }
+
+    .repo-time.fresh { color: var(--green); }
+
+    /* Skeleton loading state (UX guideline: show skeleton during fetch) */
+    .repo-skeleton {
+      height: 72px;
+      background: var(--bg2);
+      border: 1px solid var(--border);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .repo-skeleton::after {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(90deg, transparent 0%, rgba(232,160,32,0.05) 50%, transparent 100%);
+      animation: shimmer 1.6s infinite;
+    }
+
+    @keyframes shimmer {
+      from { transform: translateX(-100%); }
+      to   { transform: translateX(100%); }
+    }
+
+    @media (max-width: 768px) {
+      .now-grid { grid-template-columns: 1fr; gap: 3rem; }
+    }
+
     /* ── RESPONSIVE ── */
     @media (max-width: 900px) {
       .project-card--featured {
@@ -869,6 +1040,7 @@
       <li><a href="#projects">Projects</a></li>
       <li><a href="#skills">Skills</a></li>
       <li><a href="#resume">Resume</a></li>
+      <li><a href="#now">Now</a></li>
       <li><a href="#contact">Contact</a></li>
     </ul>
     <button class="nav-toggle" id="navToggle" aria-label="Toggle navigation" aria-expanded="false">
@@ -1104,9 +1276,73 @@
 
   <div class="divider"></div>
 
+  <!-- NOW -->
+  <section id="now">
+    <p class="section-label reveal">// 05 — Now</p>
+    <h2 class="section-title reveal">What I'm<br />up to.</h2>
+    <div class="now-grid">
+
+      <!-- Static status -->
+      <div class="reveal">
+        <p class="now-subtitle">// Current Status</p>
+        <div class="status-list">
+          <div class="status-row">
+            <span class="status-row-icon">◉</span>
+            <div>
+              <span class="status-row-label">Availability</span>
+              <span class="status-row-value green">Open to Summer 2026 Internships</span>
+            </div>
+          </div>
+          <div class="status-row">
+            <span class="status-row-icon">⌖</span>
+            <div>
+              <span class="status-row-label">School</span>
+              <span class="status-row-value">B.S. Computer Engineering — CSULB<br/>Spring 2026 · Grad 2027</span>
+            </div>
+          </div>
+          <div class="status-row">
+            <span class="status-row-icon">▸</span>
+            <div>
+              <span class="status-row-label">Currently Building</span>
+              <span class="status-row-value">ESP32 Spotify Karaoke Display<br/>+ Android BLE Companion App</span>
+            </div>
+          </div>
+          <div class="status-row">
+            <span class="status-row-icon">◈</span>
+            <div>
+              <span class="status-row-label">Focus Areas</span>
+              <span class="status-row-value">Embedded Systems · FPGA Design<br/>Hardware-Software Integration</span>
+            </div>
+          </div>
+          <div class="status-row">
+            <span class="status-row-icon">⌘</span>
+            <div>
+              <span class="status-row-label">Location</span>
+              <span class="status-row-value">Long Beach, CA</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Live GitHub feed -->
+      <div class="reveal">
+        <p class="now-subtitle">// Live GitHub Activity <small id="github-sync"></small></p>
+        <div id="github-repos" class="repo-list">
+          <div class="repo-skeleton"></div>
+          <div class="repo-skeleton"></div>
+          <div class="repo-skeleton"></div>
+          <div class="repo-skeleton"></div>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <div class="divider"></div>
+
   <!-- CONTACT -->
   <section id="contact">
-    <p class="section-label reveal">// 05 — Contact</p>
+    <p class="section-label reveal">// 06 — Contact</p>
     <h2 class="section-title reveal">Let's talk<br />hardware.</h2>
     <div class="contact-grid">
       <div class="contact-text reveal">
@@ -1243,6 +1479,63 @@
     navToggle.addEventListener('click', () => setNavOpen(!navMenu.classList.contains('open')));
     navOverlay.addEventListener('click', () => setNavOpen(false));
     navMenu.querySelectorAll('a').forEach(a => a.addEventListener('click', () => setNavOpen(false)));
+
+    /* ── LIVE GITHUB FEED ── */
+    async function loadGitHubActivity() {
+      const container = document.getElementById('github-repos');
+      const syncEl    = document.getElementById('github-sync');
+
+      try {
+        const res   = await fetch('https://api.github.com/users/ndsarkozy/repos?sort=pushed&per_page=10');
+        const repos = await res.json();
+
+        const filtered = repos
+          .filter(r => r.name !== 'ndsarkozy.github.io' && !r.fork)
+          .slice(0, 5);
+
+        const now = Date.now();
+
+        function timeAgo(dateStr) {
+          const diff  = now - new Date(dateStr).getTime();
+          const mins  = Math.floor(diff / 60000);
+          const hours = Math.floor(diff / 3600000);
+          const days  = Math.floor(diff / 86400000);
+          if (mins  < 60)  return `${mins}m ago`;
+          if (hours < 24)  return `${hours}h ago`;
+          if (days  < 7)   return `${days}d ago`;
+          return new Date(dateStr).toLocaleDateString('en-US', { month: 'short', day: 'numeric' });
+        }
+
+        function isFresh(dateStr) {
+          return (now - new Date(dateStr).getTime()) < 86400000 * 3;
+        }
+
+        container.innerHTML = filtered.map(repo => {
+          const ago   = timeAgo(repo.pushed_at);
+          const fresh = isFresh(repo.pushed_at);
+          const lang  = repo.language || '—';
+          const name  = repo.name.replace(/[-_]/g, ' ');
+          const desc  = repo.description ? `<p class="repo-desc">${repo.description}</p>` : '';
+
+          return `
+            <a href="${repo.html_url}" target="_blank" rel="noopener" class="repo-card">
+              <div class="repo-header">
+                <span class="repo-name">${name}</span>
+                <span class="repo-lang">${lang}</span>
+              </div>
+              ${desc}
+              <span class="repo-time${fresh ? ' fresh' : ''}">pushed ${ago}${fresh ? ' ◉' : ''}</span>
+            </a>`;
+        }).join('');
+
+        syncEl.textContent = `— live · ${new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}`;
+
+      } catch (e) {
+        container.innerHTML = '<p style="font-family:var(--mono);font-size:0.78rem;color:var(--muted);">GitHub data unavailable — check back later.</p>';
+      }
+    }
+
+    loadGitHubActivity();
   </script>
 
 </body>
